@@ -6,10 +6,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,4 +40,37 @@ public class JDBCController {
         int resultCount = jdbcTemplate.update(sql, params);
         return "redirect:/exam01";
     }
+
+    @GetMapping("/edit/{id}")   // 수정 뷰 페이지 출력
+    public String editMethod(@PathVariable(name = "id") int id, Model model) {
+        String sql = "SELECT * FROM person WHERE id = ?";
+        Person person = jdbcTemplate.queryForObject(
+                sql,
+                BeanPropertyRowMapper.newInstance(Person.class),
+                id
+        );
+        model.addAttribute("person", person);
+        return "viewPage01_edit";
+    }
+
+    @PostMapping("/update")   // 수정 수행
+    public String updateMethod(@ModelAttribute("Person") Person person) {
+        String sql = "UPDATE person SET name = ?, age = ?, email = ? WHERE id = ?";
+        int result = jdbcTemplate.update(
+                sql,
+                person.getName(),
+                person.getAge(),
+                person.getEmail(),
+                person.getId()
+        );
+        return "redirect:/exam01";
+    }
+
+    @GetMapping("/delete/{id}") //삭제 수행
+    public String deleteMethod(@PathVariable(name ="id") int id) {
+        String sql = "DELETE FROM person WHERE id =? ";
+        int result = jdbcTemplate.update(sql, id);
+        return "redirect:/exam01";
+    }
+
 }

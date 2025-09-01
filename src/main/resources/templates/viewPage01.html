@@ -23,8 +23,8 @@
                 <td th:text="${person.age}"></td>
                 <td th:text="${person.email}"></td>
                 <td>
-                    <a href="#Edit">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp; <!-- 연결되는 더미 링크 -->
-                    <a href="#Delete">Delete</a> <!-- 연결되는 더미 링크 -->
+                    <a th:href="@{'/exam01/edit/' + ${person.id}}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp; <!-- 연결되는 더미 링크 -->
+                    <a th:href="@{'/exam01/delete/' + ${person.id}}">Delete</a> <!-- 연결되는 더미 링크 -->
                 </td>
             </tr>
         </table>
