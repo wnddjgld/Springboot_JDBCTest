@@ -1,6 +1,5 @@
 package kr.ac.kopo.wnddjgld.springboot_jdbctest.domain;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,7 +12,13 @@ public class Product {
     private String name;
     private float price;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "detail_id")
+//    단방향: Product에서 Detail 참조
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "detail_id")
+//    private Detail detail;
+
+    //    공유기본키를 사용한 양방향
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private Detail detail;
 }
